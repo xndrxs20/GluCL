@@ -1,0 +1,79 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Insulina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="assets/favicon-16x16.png" type="image/x-icon"> <!-- Favicon añadido -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-roboto">
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-3xl font-bold text-gray-800">Calculadora de Insulina</h1>
+            <button onclick="window.history.back()" class="bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700">
+                <i class="fas fa-arrow-left"></i> Atrás
+            </button>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <form id="insulinCalculator" class="space-y-6">
+                <div>
+                    <label for="currentGlucose" class="block text-sm font-medium text-gray-700"> Glicemia Actual</label>
+                    <input type="number" id="currentGlucose" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div>
+                    <label for="idealGlucose" class="block text-sm font-medium text-gray-700"> Glicemia Capilar</label>
+                    <input type="number" id="idealGlucose" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div>
+                    <label for="ratio" class="block text-sm font-medium text-gray-700">Ratio</label>
+                    <input type="number" id="ratio" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div>
+                    <label for="carbs" class="block text-sm font-medium text-gray-700">Cantidad de Carbohidratos</label>
+                    <input type="number" id="carbs" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div>
+                    <label for="sensitivity" class="block text-sm font-medium text-gray-700">Sensibilidad</label>
+                    <input type="number" id="sensitivity" class="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+                <div>
+                    <button type="button" onclick="calculateInsulin()" class="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">Calcular Ingesta de Insulina</button>
+                </div>
+            </form>
+
+            <!-- Resultado en un cuadro grande -->
+            <div id="result" class="mt-8 p-6 bg-gray-100 border border-gray-300 rounded-lg shadow text-center">
+                <p class="text-2xl font-semibold text-gray-700">El resultado aparecerá aquí.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateInsulin() {
+            const currentGlucose = parseFloat(document.getElementById('currentGlucose').value);
+            const idealGlucose = parseFloat(document.getElementById('idealGlucose').value);
+            const ratio = parseFloat(document.getElementById('ratio').value);
+            const carbs = parseFloat(document.getElementById('carbs').value);
+            const sensitivity = parseFloat(document.getElementById('sensitivity').value);
+
+            // Calcular Resultado 1: Carbohidratos / Ratio
+            const resultado1 = carbs / ratio;
+
+            // Calcular Resultado 2: (Glicemia Ideal - Glicemia Actual) / Sensibilidad
+            const resultado2 = (idealGlucose - currentGlucose) / sensitivity;
+
+            // Calcular Unidades Totales de Insulina
+            const insulinIntake = resultado1 + resultado2;
+
+            // Mostrar resultados en el cuadro
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `
+                <p class="text-xl font-medium text-gray-700">Nivel de Ingesta de Insulina:</p>
+                <p class="text-4xl font-bold text-indigo-600">${insulinIntake.toFixed(2)} unidades</p>
+            `;
+        }
+    </script>
+</body>
+</html>
